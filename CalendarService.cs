@@ -50,22 +50,17 @@ namespace MyCalendarApp
             throw new NotImplementedException();
         }
 
-        internal void AddNewEvent()
+        internal void AddNew()
         {
             throw new NotImplementedException();
         }
 
-        internal void AddNewTask()
+        internal void Edit()
         {
             throw new NotImplementedException();
         }
 
-        internal void EditEventOrTask()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void DeleteEventOrTask()
+        internal void Delete()
         {
             throw new NotImplementedException();
         }

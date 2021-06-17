@@ -34,21 +34,17 @@ namespace MyCalendarApp
                         break;
                     case '3':
                         Console.Clear();
-                        calendarService.AddNewEvent();
+                        calendarService.AddNew();
                         break;
                     case '4':
                         Console.Clear();
-                        calendarService.AddNewTask();
+                        calendarService.Edit();
                         break;
                     case '5':
                         Console.Clear();
-                        calendarService.EditEventOrTask();
+                        calendarService.Delete();
                         break;
                     case '6':
-                        Console.Clear();
-                        calendarService.DeleteEventOrTask();
-                        break;
-                    case '7':
                         Console.Clear();
                         Console.Write("Goodbye!\n");
                         Environment.Exit(0);
@@ -65,11 +61,10 @@ namespace MyCalendarApp
         {
             actionService.AddNewAction(1, "Show calendar", "Main");
             actionService.AddNewAction(2, "Show tasks", "Main");
-            actionService.AddNewAction(3, "Add a new event", "Main");
-            actionService.AddNewAction(4, "Add a new task", "Main");
-            actionService.AddNewAction(5, "Edit event or task", "Main");
-            actionService.AddNewAction(6, "Delete event or task", "Main");
-            actionService.AddNewAction(7, "Exit", "Main");
+            actionService.AddNewAction(3, "Add new...", "Main");
+            actionService.AddNewAction(4, "Edit...", "Main");
+            actionService.AddNewAction(5, "Delete...", "Main");
+            actionService.AddNewAction(6, "Exit", "Main");
 
             return actionService;
         }

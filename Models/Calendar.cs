@@ -8,7 +8,6 @@ namespace MyCalendarApp.Models
         public int Id { get; set; }
         public string CalendarName { get; set; }
         public List<Event> EventList { get; set; }
-        public List<Task> TaskList { get; set; }
         public ConsoleColor Color { get; set; }
     }
 }
