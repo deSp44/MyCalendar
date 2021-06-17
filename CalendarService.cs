@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MyCalendarApp.Helpers;
+using MyCalendarApp.MainMenuService;
 using MyCalendarApp.Models;
 
 namespace MyCalendarApp
@@ -82,9 +83,96 @@ namespace MyCalendarApp
             Console.ReadKey();
         }
 
-        internal void AddNew()
+        public void AddNew()
         {
-            throw new NotImplementedException();
+            var actionService = new MenuActionService();
+            actionService = Initialize(actionService);
+
+            bool loop = true;
+            while (loop)
+            {
+                Console.Clear();
+                Console.WriteLine("Select element that you want add:");
+                var addMenu = actionService.GetMenuActionsByMenuName("AddMenu");
+                foreach (var line in addMenu)
+                    Console.WriteLine($"{line.Id}. {line.Name}");
+                Console.Write("> ");
+
+                var operation = Console.ReadKey();
+                switch (operation.KeyChar)
+                {
+                    case '1':
+                        var newCalendar = new Calendar();
+                        Console.Clear();
+                        Console.Write("Enter new calendar name: ");
+                        var name = Console.ReadLine();
+                        Console.WriteLine("Enter calendar color by name: ");
+
+                        // CREATE LIST OF COLORS
+                        List<ConsoleColor> color = new List<ConsoleColor>();
+                        for (int i = 1; i < 16; i++)
+                        {
+                            color.Add((ConsoleColor)i);
+                            Console.WriteLine(i + ". " + (ConsoleColor)i);
+                        }
+
+                        Console.Write("> ");
+                        var choosenColor = Console.ReadLine();
+                        var colorSearch = false;
+                        foreach (var item in color)
+                        {
+                            if (item.ToString().ToLower() == choosenColor.ToLower())
+                            {
+                                colorSearch = true;
+                                newCalendar.Color = item;
+                                newCalendar.CalendarName = name;
+                            }       
+                        }
+                        if (!colorSearch)
+                        {
+                            Console.WriteLine("Color not found! Try again.");
+                            Console.WriteLine("Click any key to continue...");
+                            Console.ReadKey();
+                            break;
+                        }
+
+                        Console.Write("Press 'Y' if you are sure to add: ");
+                        ConsoleKeyInfo enteredKey = Console.ReadKey();
+                        if (enteredKey.Key == ConsoleKey.Y)
+                        {
+                            var calendarList = FileHelperEvent.DeserializeFromFile();
+                            var calendarWithHighestId = calendarList.OrderByDescending(x => x.Id).FirstOrDefault();
+                            newCalendar.Id = calendarWithHighestId == null ? 1 : calendarWithHighestId.Id + 1;
+                            calendarList.Add(newCalendar);
+                            FileHelperEvent.SerializeToFile(calendarList);
+                            Console.WriteLine("\n\nAdding done! Click any key to continue...");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n\nOperation stopped. Click any key to continue...");
+                            Console.ReadKey();
+                        }
+                        break;
+
+                    case '2':
+
+                        break;
+
+                    case '3':
+
+                        break;
+
+                    case '4':
+                        loop = false;
+                        break;
+
+                    default:
+                        Console.Write("There is no such option. Choose a different key.");
+                        Console.ReadKey();
+                        break;
+                }
+            }            
         }
 
         internal void Edit()
@@ -95,6 +183,16 @@ namespace MyCalendarApp
         internal void Delete()
         {
             throw new NotImplementedException();
+        }
+
+        private static MenuActionService Initialize(MenuActionService actionService)
+        {
+            actionService.AddNewAction(1, "Calendar", "AddMenu");
+            actionService.AddNewAction(2, "Event", "AddMenu");
+            actionService.AddNewAction(3, "Task", "AddMenu");
+            actionService.AddNewAction(4, "Cancel action", "AddMenu");
+
+            return actionService;
         }
 
     }
