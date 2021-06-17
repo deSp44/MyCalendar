@@ -9,8 +9,10 @@ namespace MyCalendarApp
 {
     public class CalendarService
     {
-        private static readonly string FilePath = Path.Combine(Environment.CurrentDirectory + @"\MyCalendarData.xml");
-        private static readonly FileHelpersXml<List<Calendar>> FileHelper = new(FilePath);
+        private static readonly string FilePathCal = Path.Combine(Environment.CurrentDirectory + @"\CalendarEventData.xml");
+        private static readonly string FilePathTask = Path.Combine(Environment.CurrentDirectory + @"\CalendarTaskData.xml");
+        private static readonly FileHelpersXml<List<Calendar>> FileHelperEvent = new(FilePathCal);
+        private static readonly FileHelpersXml<List<Task>> FileHelperTask = new(FilePathTask);
 
         private static void ShowCurrentTime()
         {
@@ -22,7 +24,7 @@ namespace MyCalendarApp
         {
             ShowCurrentTime();
 
-            var calendarList = FileHelper.DeserializeFromFile().ToList();
+            var calendarList = FileHelperEvent.DeserializeFromFile().ToList();
             foreach (var item in calendarList)
             {
                 var eventList = item.EventList.ToList();
@@ -45,9 +47,39 @@ namespace MyCalendarApp
             Console.ReadKey();
         }
 
-        internal void ShowTasks()
+        public void ShowTasks()
         {
-            throw new NotImplementedException();
+            ShowCurrentTime();
+
+            var taskList = FileHelperTask.DeserializeFromFile().ToList();
+            var sortedList = taskList.OrderBy(x => x.DayOfEvent);
+
+            Console.WriteLine("--- TO DO ----");
+            foreach (var task in sortedList)
+            {
+                if (!task.IsDone)
+                {
+                    Console.WriteLine("Name: " + task.TaskName);
+                    Console.WriteLine("Date: " + task.DayOfEvent.ToString("dddd, dd MMMM yyyy"));
+                    Console.Write("\n");
+                }
+            }
+
+            Console.WriteLine("--- DONE ---");
+            foreach (var task in sortedList)
+            {
+                if (task.IsDone)
+                {
+                    Console.WriteLine("Name: " + task.TaskName);
+                    Console.WriteLine("Date: " + task.DayOfEvent.ToString("dddd, dd MMMM yyyy"));
+                    Console.Write("\n");
+                }
+            }
+
+            //TODO : MARK TASK AS DONE
+
+            Console.Write("\nClick any button to continue...");
+            Console.ReadKey();
         }
 
         internal void AddNew()
