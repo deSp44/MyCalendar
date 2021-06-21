@@ -10,5 +10,15 @@
         Brown,
         Pink,
         Orange,
+        DarkBlue,
+        DarkGreen,
+        DarkCyan,
+        DarkRed,
+        DarkMagenta,
+        DarkYellow,
+        Gray,
+        DarkGray,
+        Cyan,
+        Magenta
     }
 }

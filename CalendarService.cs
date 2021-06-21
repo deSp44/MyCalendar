@@ -21,7 +21,7 @@ namespace MyCalendarApp
             Console.WriteLine("Current time: " + currentTime + "\n");
         }
 
-        public void ShowCalendar()
+        public static void ShowCalendar()
         {
             ShowCurrentTime();
 
@@ -48,7 +48,7 @@ namespace MyCalendarApp
             Console.ReadKey();
         }
 
-        public void ShowTasks()
+        public static void ShowTasks()
         {
             ShowCurrentTime();
 
@@ -83,12 +83,12 @@ namespace MyCalendarApp
             Console.ReadKey();
         }
 
-        public void AddNew()
+        public static void AddNew()
         {
             var actionService = new MenuActionService();
             actionService = Initialize(actionService);
 
-            bool loop = true;
+            var loop = true;
             while (loop)
             {
                 Console.Clear();
@@ -108,36 +108,31 @@ namespace MyCalendarApp
                         var name = Console.ReadLine();
                         Console.WriteLine("Enter calendar color by name: ");
 
-                        // CREATE LIST OF COLORS
-                        List<ConsoleColor> color = new List<ConsoleColor>();
-                        for (int i = 1; i < 16; i++)
+                        
+                        var values = Enum.GetValues(typeof(CalendarColor));
+                        var count = 1;
+                        foreach (var item in values)
                         {
-                            color.Add((ConsoleColor)i);
-                            Console.WriteLine(i + ". " + (ConsoleColor)i);
+                            Console.WriteLine($"{count}. {item}");
+                            count++;
                         }
-
                         Console.Write("> ");
-                        var choosenColor = Console.ReadLine();
-                        var colorSearch = false;
-                        foreach (var item in color)
+                        var choosenColor = (CalendarColor)(int.Parse(Console.ReadLine()));
+
+                        if (Convert.ToInt32(choosenColor) < 0 || Convert.ToInt32(choosenColor) > 18)
                         {
-                            if (item.ToString().ToLower() == choosenColor.ToLower())
-                            {
-                                colorSearch = true;
-                                newCalendar.Color = item;
-                                newCalendar.CalendarName = name;
-                            }       
-                        }
-                        if (!colorSearch)
-                        {
-                            Console.WriteLine("Color not found! Try again.");
-                            Console.WriteLine("Click any key to continue...");
+                            Console.WriteLine("Invalid color! Click any key to continue...");
                             Console.ReadKey();
                             break;
                         }
+                        else
+                        {
+                            newCalendar.Color = (ConsoleColor)choosenColor;
+                            newCalendar.CalendarName = name;
+                        }
 
                         Console.Write("Press 'Y' if you are sure to add: ");
-                        ConsoleKeyInfo enteredKey = Console.ReadKey();
+                        var enteredKey = Console.ReadKey();
                         if (enteredKey.Key == ConsoleKey.Y)
                         {
                             var calendarList = FileHelperEvent.DeserializeFromFile();

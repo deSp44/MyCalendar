@@ -26,15 +26,15 @@ namespace MyCalendarApp
                 {
                     case '1':
                         Console.Clear();
-                        calendarService.ShowCalendar();
+                        CalendarService.ShowCalendar();
                         break;
                     case '2':
                         Console.Clear();
-                        calendarService.ShowTasks();
+                        CalendarService.ShowTasks();
                         break;
                     case '3':
                         Console.Clear();
-                        calendarService.AddNew();
+                        CalendarService.AddNew();
                         break;
                     case '4':
                         Console.Clear();
