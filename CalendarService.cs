@@ -60,8 +60,8 @@ namespace MyCalendarApp
             {
                 if (!task.IsDone)
                 {
-                    Console.WriteLine("Name: " + task.TaskName);
-                    Console.WriteLine("Date: " + task.DayOfEvent.ToString("dddd, dd MMMM yyyy"));
+                    //Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.WriteLine($"Name: {task.TaskName} Date: {task.DayOfEvent.ToString("dddd, dd MMMM yyyy")}");
                     Console.Write("\n");
                 }
             }
@@ -71,8 +71,7 @@ namespace MyCalendarApp
             {
                 if (task.IsDone)
                 {
-                    Console.WriteLine("Name: " + task.TaskName);
-                    Console.WriteLine("Date: " + task.DayOfEvent.ToString("dddd, dd MMMM yyyy"));
+                    Console.WriteLine($"Name: {task.TaskName} Date: {task.DayOfEvent.ToString("dddd, dd MMMM yyyy")}");
                     Console.Write("\n");
                 }
             }
@@ -151,11 +150,67 @@ namespace MyCalendarApp
                         break;
 
                     case '2':
+                        var newEvent = new Event();
 
+                        Console.Clear();
+                        Console.Write("Enter event name: ");
+                        newEvent.EventName = Console.ReadLine();
+                        Console.Write("Enter event start date: ");
+                        // TODO : ADD VALIDATION
+                        newEvent.DateOfStart = Convert.ToDateTime(Console.ReadLine());
+                        // TODO : ADD VALIDATION
+                        Console.Write("Enter event end date: ");
+                        newEvent.DateOfEnd = Convert.ToDateTime(Console.ReadLine());
+                        Console.Write("Enter event description: ");
+                        newEvent.Description = Console.ReadLine();
+                        Console.Write("Is busy?: ");
+                        // TODO : ADD VALIDATION
+                        newEvent.IsBusy = Convert.ToBoolean(Console.ReadLine());
+
+                        var countCalendar = 1;
+                        var list = FileHelperEvent.DeserializeFromFile();
+
+                        Console.WriteLine("Choose calendar: ");
+                        foreach (var item in list)
+                        {
+                            Console.ForegroundColor = item.Color;
+                            Console.WriteLine($"{countCalendar}.  {item.CalendarName}");
+                            countCalendar++;
+                        }
+                        Console.ForegroundColor = ConsoleColor.White;
+
+                        var enteredKeyOption = int.Parse(Console.ReadLine());
+                        countCalendar = 1;
+
+                        Console.Write("Press 'Y' if you are sure to add: ");
+                        enteredKey = Console.ReadKey();
+                        if (enteredKey.Key == ConsoleKey.Y)
+                        {
+                            for (int index = 1; index <= list.Count; index++)
+                            {
+                                if (index != enteredKeyOption)
+                                    continue;
+                                else
+                                {
+                                    var eventWithHighestId = list[index-1].EventList.OrderByDescending(x => x.Id).FirstOrDefault();
+                                    newEvent.Id = eventWithHighestId == null ? 1 : eventWithHighestId.Id + 1;
+                                    list[index-1].EventList.Add(newEvent);
+                                }
+                                    
+                            }
+                            FileHelperEvent.SerializeToFile(list);
+                            Console.WriteLine("\n\nAdding done! Click any key to continue...");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n\nOperation stopped. Click any key to continue...");
+                            Console.ReadKey();
+                        }
                         break;
 
                     case '3':
-
+                        // TODO : ADDING TASK
                         break;
 
                     case '4':
@@ -189,6 +244,5 @@ namespace MyCalendarApp
 
             return actionService;
         }
-
     }
 }
