@@ -6,7 +6,7 @@ namespace MyCalendarApp.Models
     {
         public int Id { get; set; }
         public string TaskName { get; set; }
-        public DateTime DayOfEvent { get; set; }
+        public DateTime DayOfTask { get; set; }
         public bool IsDone { get; set; }
     }
 }

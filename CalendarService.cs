@@ -17,7 +17,7 @@ namespace MyCalendarApp
 
         private static void ShowCurrentTime()
         {
-            var currentTime = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm:ss");
+            var currentTime = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm");
             Console.WriteLine("Current time: " + currentTime + "\n");
         }
 
@@ -35,14 +35,21 @@ namespace MyCalendarApp
                 Console.ForegroundColor = item.Color;
                 foreach (var calEvent in sortedList)
                 {
-                    Console.WriteLine("Name: " + calEvent.EventName);
-                    Console.WriteLine("Date of start: " + calEvent.DateOfStart.ToString("dddd, dd MMMM yyyy HH:mm"));
-                    Console.WriteLine("Date of end: " + calEvent.DateOfEnd.ToString("dddd, dd MMMM yyyy HH:mm"));
-                    Console.WriteLine("Description: " + calEvent.Description);
-                    Console.WriteLine(calEvent.IsBusy ? "Busy: YES" : "Busy: NO");
-                    Console.Write("\n");
+                    if (calEvent.DateOfEnd > DateTime.Now)
+                    {
+                        Console.WriteLine("Name: " + calEvent.EventName);
+                        Console.WriteLine("Date of start: " + calEvent.DateOfStart.ToString("dddd, dd MMMM yyyy HH:mm"));
+                        Console.WriteLine("Date of end: " + calEvent.DateOfEnd.ToString("dddd, dd MMMM yyyy HH:mm"));
+                        Console.WriteLine("Description: " + calEvent.Description);
+                        Console.WriteLine(calEvent.IsBusy ? "Busy: YES" : "Busy: NO");
+                        Console.Write("\n");
+                    }
+                    else
+                    {
+                        // TODO : VIEW OF THE EVENTS THAT HAVE PASSED
+                    }
                 }
-                Console.ForegroundColor = ConsoleColor.White;
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             Console.Write("\nClick any button to continue...");
             Console.ReadKey();
@@ -53,7 +60,7 @@ namespace MyCalendarApp
             ShowCurrentTime();
 
             var taskList = FileHelperTask.DeserializeFromFile().ToList();
-            var sortedList = taskList.OrderBy(x => x.DayOfEvent);
+            var sortedList = taskList.OrderBy(x => x.DayOfTask);
 
             Console.WriteLine("--- TO DO ----");
             foreach (var task in sortedList)
@@ -61,7 +68,7 @@ namespace MyCalendarApp
                 if (!task.IsDone)
                 {
                     //Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    Console.WriteLine($"Name: {task.TaskName} Date: {task.DayOfEvent.ToString("dddd, dd MMMM yyyy")}");
+                    Console.WriteLine($"Name: {task.TaskName} \nDate: {task.DayOfTask.ToString("dddd, dd MMMM yyyy")}");
                     Console.Write("\n");
                 }
             }
@@ -71,14 +78,14 @@ namespace MyCalendarApp
             {
                 if (task.IsDone)
                 {
-                    Console.WriteLine($"Name: {task.TaskName} Date: {task.DayOfEvent.ToString("dddd, dd MMMM yyyy")}");
+                    Console.WriteLine($"Name: {task.TaskName} \nDate: {task.DayOfTask.ToString("dddd, dd MMMM yyyy")}");
                     Console.Write("\n");
                 }
             }
 
             //TODO : MARK TASK AS DONE
 
-            Console.Write("\nClick any button to continue...");
+            Console.Write("Click any button to continue...");
             Console.ReadKey();
         }
 
@@ -177,7 +184,7 @@ namespace MyCalendarApp
                             Console.WriteLine($"{countCalendar}.  {item.CalendarName}");
                             countCalendar++;
                         }
-                        Console.ForegroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Gray;
 
                         var enteredKeyOption = int.Parse(Console.ReadLine());
                         countCalendar = 1;
@@ -211,6 +218,35 @@ namespace MyCalendarApp
 
                     case '3':
                         // TODO : ADDING TASK
+                        var newTask = new Task();
+
+                        Console.Clear();
+                        Console.Write("Enter task name: ");
+                        newTask.TaskName = Console.ReadLine();
+                        Console.Write("Enter task date: ");
+                        // TODO : ADD VALIDATION
+                        newTask.DayOfTask = Convert.ToDateTime(Console.ReadLine());
+      
+                        Console.Write("Press 'Y' if you are sure to add: ");
+                        enteredKey = Console.ReadKey();
+
+                        var tasksList = FileHelperTask.DeserializeFromFile();
+
+                        if (enteredKey.Key == ConsoleKey.Y)
+                        {
+                            var taskWithHighestId = tasksList.OrderByDescending(x => x.Id).FirstOrDefault();
+                            newTask.Id = taskWithHighestId == null ? 1 : taskWithHighestId.Id + 1;
+                            tasksList.Add(newTask);
+                            FileHelperTask.SerializeToFile(tasksList);
+
+                            Console.WriteLine("\n\nAdding done! Click any key to continue...");
+                            Console.ReadKey();
+                        }
+                        else
+                        {
+                            Console.WriteLine("\n\nOperation stopped. Click any key to continue...");
+                            Console.ReadKey();
+                        }
                         break;
 
                     case '4':
@@ -218,7 +254,7 @@ namespace MyCalendarApp
                         break;
 
                     default:
-                        Console.Write("There is no such option. Choose a different key.");
+                        Console.Write("\nThere is no such option. Choose a different key.");
                         Console.ReadKey();
                         break;
                 }

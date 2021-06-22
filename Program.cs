@@ -37,12 +37,16 @@ namespace MyCalendarApp
                         CalendarService.AddNew();
                         break;
                     case '4':
+                        Console.WriteLine("\nNot implemented yet!");
+                        Console.ReadKey();
                         Console.Clear();
-                        calendarService.Edit();
+                        //calendarService.Edit();
                         break;
                     case '5':
+                        Console.WriteLine("\nNot implemented yet!");
+                        Console.ReadKey();
                         Console.Clear();
-                        calendarService.Delete();
+                        //calendarService.Delete();
                         break;
                     case '6':
                         Console.Clear();
@@ -50,7 +54,7 @@ namespace MyCalendarApp
                         Environment.Exit(0);
                         break;
                     default:
-                        Console.Write("There is no such option. Choose a different key.");
+                        Console.Write("\nThere is no such option. Choose a different key.");
                         Console.ReadKey();
                         break;
                 }
