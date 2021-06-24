@@ -17,6 +17,10 @@ namespace MyCalendarApp.Helpers
         {
             var serializer = new XmlSerializer(typeof(T));
 
+            var fileInfo = new FileInfo(_filePath);
+            if (!fileInfo.Exists)
+                Directory.CreateDirectory(fileInfo.Directory.FullName);
+
             using var streamWriter = new StreamWriter(_filePath);
             serializer.Serialize(streamWriter, param);
             streamWriter.Close();
