@@ -162,12 +162,10 @@ namespace MyCalendarApp
                         Console.Clear();
                         Console.Write("Enter event name: ");
                         newEvent.EventName = Console.ReadLine();
-                        Console.Write("Enter event start date: ");
-                        // TODO : ADD VALIDATION
-                        newEvent.DateOfStart = Convert.ToDateTime(Console.ReadLine());
-                        // TODO : ADD VALIDATION
-                        Console.Write("Enter event end date: ");
-                        newEvent.DateOfEnd = Convert.ToDateTime(Console.ReadLine());
+                        Console.Write("Enter event start date in correct format - DD-MM-YYYY: ");
+                        newEvent.DateOfStart = CheckValid.IsValidDate();
+                        Console.Write("Enter event end date in correct format - DD-MM-YYYY: ");
+                        newEvent.DateOfEnd = CheckValid.IsValidDate();
                         Console.Write("Enter event description: ");
                         newEvent.Description = Console.ReadLine();
                         Console.Write("Is busy?: ");
@@ -217,15 +215,13 @@ namespace MyCalendarApp
                         break;
 
                     case '3':
-                        // TODO : ADDING TASK
                         var newTask = new Task();
 
                         Console.Clear();
                         Console.Write("Enter task name: ");
                         newTask.TaskName = Console.ReadLine();
-                        Console.Write("Enter task date: ");
-                        // TODO : ADD VALIDATION
-                        newTask.DayOfTask = Convert.ToDateTime(Console.ReadLine());
+                        Console.Write("Enter task date in correct format - DD-MM-YYYY: ");
+                        newTask.DayOfTask = CheckValid.IsValidDate();
       
                         Console.Write("Press 'Y' if you are sure to add: ");
                         enteredKey = Console.ReadKey();

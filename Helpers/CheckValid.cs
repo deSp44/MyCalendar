@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,9 +15,18 @@ namespace MyCalendarApp.Helpers
             return success ? number : 0;
         }
 
-        public static bool IsValidDate(int year, int month, int day)
+        public static DateTime IsValidDate()
         {
-            return (year > DateTime.MinValue.Year && year <= DateTime.MaxValue.Year) || (month >= DateTime.MinValue.Month && month <= DateTime.MaxValue.Month) || (day >= DateTime.MinValue.Day && day <= DateTime.DaysInMonth(year, month));
+            var isValid = false;
+            DateTime correctDate = DateTime.Now;
+
+            while (!isValid)
+            {
+                isValid = DateTime.TryParseExact(Console.ReadLine(), "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out correctDate);
+                if (!isValid)
+                    Console.Write("Enter date again, but in correct format: ");
+            }
+            return correctDate;
         }
 
         public static void ConfirmOperation()
