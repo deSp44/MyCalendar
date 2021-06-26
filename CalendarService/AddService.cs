@@ -6,88 +6,14 @@ using MyCalendarApp.Helpers;
 using MyCalendarApp.MainMenuService;
 using MyCalendarApp.Models;
 
-namespace MyCalendarApp
+namespace MyCalendarApp.CalendarService
 {
-    public class CalendarService
+    public static class AddService
     {
         private static readonly string FilePathCal = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"MyCalendarApp\CalendarEventData.xml");
         private static readonly string FilePathTask = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"MyCalendarApp\CalendarTaskData.xml");
         private static readonly FileHelpersXml<List<Calendar>> FileHelperEvent = new(FilePathCal);
         private static readonly FileHelpersXml<List<Task>> FileHelperTask = new(FilePathTask);
-
-        private static void ShowCurrentTime()
-        {
-            var currentTime = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm");
-            Console.WriteLine("Current time: " + currentTime + "\n");
-        }
-
-        public static void ShowCalendar()
-        {
-            ShowCurrentTime();
-
-            var calendarList = FileHelperEvent.DeserializeFromFile().ToList();
-            foreach (var item in calendarList)
-            {
-                var eventList = item.EventList.ToList();
-                var sortedList = eventList.OrderBy(x => x.DateOfStart);
-
-                Console.WriteLine("--- " + item.CalendarName + " ---");
-                Console.ForegroundColor = item.Color;
-                foreach (var calEvent in sortedList)
-                {
-                    if (calEvent.DateOfEnd > DateTime.Now)
-                    {
-                        Console.WriteLine("Name: " + calEvent.EventName);
-                        Console.WriteLine("Date of start: " + calEvent.DateOfStart.ToString("dddd, dd MMMM yyyy HH:mm"));
-                        Console.WriteLine("Date of end: " + calEvent.DateOfEnd.ToString("dddd, dd MMMM yyyy HH:mm"));
-                        Console.WriteLine("Description: " + calEvent.Description);
-                        Console.WriteLine(calEvent.IsBusy ? "Busy: YES" : "Busy: NO");
-                        Console.Write("\n");
-                    }
-                    else
-                    {
-                        // TODO : VIEW OF THE EVENTS THAT HAVE PASSED
-                    }
-                }
-                Console.ForegroundColor = ConsoleColor.Gray;
-            }
-            Console.Write("\nClick any button to continue...");
-            Console.ReadKey();
-        }
-
-        public static void ShowTasks()
-        {
-            ShowCurrentTime();
-
-            var taskList = FileHelperTask.DeserializeFromFile().ToList();
-            var sortedList = taskList.OrderBy(x => x.DayOfTask);
-
-            Console.WriteLine("--- TO DO ----");
-            foreach (var task in sortedList)
-            {
-                if (!task.IsDone)
-                {
-                    //Console.ForegroundColor = ConsoleColor.DarkMagenta;
-                    Console.WriteLine($"Name: {task.TaskName} \nDate: {task.DayOfTask.ToString("dddd, dd MMMM yyyy")}");
-                    Console.Write("\n");
-                }
-            }
-
-            Console.WriteLine("--- DONE ---");
-            foreach (var task in sortedList)
-            {
-                if (task.IsDone)
-                {
-                    Console.WriteLine($"Name: {task.TaskName} \nDate: {task.DayOfTask.ToString("dddd, dd MMMM yyyy")}");
-                    Console.Write("\n");
-                }
-            }
-
-            //TODO : MARK TASK AS DONE
-
-            Console.Write("Click any button to continue...");
-            Console.ReadKey();
-        }
 
         public static void AddNew()
         {
@@ -109,33 +35,20 @@ namespace MyCalendarApp
                 {
                     case '1':
                         var newCalendar = new Calendar();
+
                         Console.Clear();
                         Console.Write("Enter new calendar name: ");
-                        var name = Console.ReadLine();
-                        Console.WriteLine("Enter calendar color by name: ");
+                        newCalendar.Name = Console.ReadLine();
+                        Console.WriteLine("Enter calendar color by number: ");
 
-                        
-                        var values = Enum.GetValues(typeof(CalendarColor));
+                        var values = Enum.GetValues(typeof(ConsoleColor));
                         var count = 1;
                         foreach (var item in values)
                         {
                             Console.WriteLine($"{count}. {item}");
                             count++;
                         }
-                        Console.Write("> ");
-                        var choosenColor = (CalendarColor)(int.Parse(Console.ReadLine()));
-
-                        if (Convert.ToInt32(choosenColor) < 0 || Convert.ToInt32(choosenColor) > 18)
-                        {
-                            Console.WriteLine("Invalid color! Click any key to continue...");
-                            Console.ReadKey();
-                            break;
-                        }
-                        else
-                        {
-                            newCalendar.Color = (ConsoleColor)choosenColor;
-                            newCalendar.CalendarName = name;
-                        }
+                        newCalendar.Color = CheckValid.IsValidColor();
 
                         Console.Write("Press 'Y' if you are sure to add: ");
                         var enteredKey = Console.ReadKey();
@@ -143,7 +56,7 @@ namespace MyCalendarApp
                         {
                             var calendarList = FileHelperEvent.DeserializeFromFile();
                             var calendarWithHighestId = calendarList.OrderByDescending(x => x.Id).FirstOrDefault();
-                            newCalendar.Id = calendarWithHighestId == null ? 1 : calendarWithHighestId.Id + 1;
+                            newCalendar.Id = calendarWithHighestId?.Id + 1 ?? 1;
                             calendarList.Add(newCalendar);
                             FileHelperEvent.SerializeToFile(calendarList);
                             Console.WriteLine("\n\nAdding done! Click any key to continue...");
@@ -161,31 +74,36 @@ namespace MyCalendarApp
 
                         Console.Clear();
                         Console.Write("Enter event name: ");
-                        newEvent.EventName = Console.ReadLine();
+                        newEvent.Name = Console.ReadLine();
                         Console.Write("Enter event start date in correct format - DD-MM-YYYY: ");
                         newEvent.DateOfStart = CheckValid.IsValidDate();
                         Console.Write("Enter event end date in correct format - DD-MM-YYYY: ");
                         newEvent.DateOfEnd = CheckValid.IsValidDate();
                         Console.Write("Enter event description: ");
                         newEvent.Description = Console.ReadLine();
-                        Console.Write("Is busy?: ");
-                        // TODO : ADD VALIDATION
-                        newEvent.IsBusy = Convert.ToBoolean(Console.ReadLine());
+                        Console.Write("Status (FREE/BUSY): ");
+                        newEvent.IsBusy = CheckValid.IsBusy();
 
                         var countCalendar = 1;
                         var list = FileHelperEvent.DeserializeFromFile();
+
+                        if (!list.Any())
+                        {
+                            Console.WriteLine("\n\nOperation stopped. No calendar has been created yet.");
+                            Console.ReadKey();
+                            break;
+                        }
 
                         Console.WriteLine("Choose calendar: ");
                         foreach (var item in list)
                         {
                             Console.ForegroundColor = item.Color;
-                            Console.WriteLine($"{countCalendar}.  {item.CalendarName}");
+                            Console.WriteLine($"{countCalendar}.  {item.Name}");
                             countCalendar++;
                         }
                         Console.ForegroundColor = ConsoleColor.Gray;
 
-                        var enteredKeyOption = int.Parse(Console.ReadLine());
-                        countCalendar = 1;
+                        var enteredKeyOption = CheckValid.IsInputNumber(countCalendar);
 
                         Console.Write("Press 'Y' if you are sure to add: ");
                         enteredKey = Console.ReadKey();
@@ -197,11 +115,11 @@ namespace MyCalendarApp
                                     continue;
                                 else
                                 {
-                                    var eventWithHighestId = list[index-1].EventList.OrderByDescending(x => x.Id).FirstOrDefault();
-                                    newEvent.Id = eventWithHighestId == null ? 1 : eventWithHighestId.Id + 1;
-                                    list[index-1].EventList.Add(newEvent);
+                                    var eventWithHighestId = list[index - 1].EventList.OrderByDescending(x => x.Id).FirstOrDefault();
+                                    newEvent.Id = eventWithHighestId?.Id + 1 ?? 1;
+                                    list[index - 1].EventList.Add(newEvent);
                                 }
-                                    
+
                             }
                             FileHelperEvent.SerializeToFile(list);
                             Console.WriteLine("\n\nAdding done! Click any key to continue...");
@@ -219,10 +137,10 @@ namespace MyCalendarApp
 
                         Console.Clear();
                         Console.Write("Enter task name: ");
-                        newTask.TaskName = Console.ReadLine();
+                        newTask.Name = Console.ReadLine();
                         Console.Write("Enter task date in correct format - DD-MM-YYYY: ");
                         newTask.DayOfTask = CheckValid.IsValidDate();
-      
+
                         Console.Write("Press 'Y' if you are sure to add: ");
                         enteredKey = Console.ReadKey();
 
@@ -231,7 +149,7 @@ namespace MyCalendarApp
                         if (enteredKey.Key == ConsoleKey.Y)
                         {
                             var taskWithHighestId = tasksList.OrderByDescending(x => x.Id).FirstOrDefault();
-                            newTask.Id = taskWithHighestId == null ? 1 : taskWithHighestId.Id + 1;
+                            newTask.Id = taskWithHighestId?.Id + 1 ?? 1;
                             tasksList.Add(newTask);
                             FileHelperTask.SerializeToFile(tasksList);
 
@@ -254,17 +172,7 @@ namespace MyCalendarApp
                         Console.ReadKey();
                         break;
                 }
-            }            
-        }
-
-        internal void Edit()
-        {
-            throw new NotImplementedException();
-        }
-
-        internal void Delete()
-        {
-            throw new NotImplementedException();
+            }
         }
 
         private static MenuActionService Initialize(MenuActionService actionService)

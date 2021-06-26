@@ -1,4 +1,5 @@
-﻿using MyCalendarApp.MainMenuService;
+﻿using MyCalendarApp.CalendarService;
+using MyCalendarApp.MainMenuService;
 using System;
 
 namespace MyCalendarApp
@@ -8,7 +9,6 @@ namespace MyCalendarApp
         public static void Main()
         {
             var actionService = new MenuActionService();
-            var calendarService = new CalendarService();
             actionService = Initialize(actionService);
 
             Console.WriteLine("Welcome to MyCalendar, the place where you manage your time!\n");
@@ -26,27 +26,27 @@ namespace MyCalendarApp
                 {
                     case '1':
                         Console.Clear();
-                        CalendarService.ShowCalendar();
+                        ShowService.ShowCalendar();
                         break;
                     case '2':
                         Console.Clear();
-                        CalendarService.ShowTasks();
+                        ShowService.ShowTasks();
                         break;
                     case '3':
                         Console.Clear();
-                        CalendarService.AddNew();
+                        AddService.AddNew();
                         break;
                     case '4':
                         Console.WriteLine("\nNot implemented yet!");
                         Console.ReadKey();
                         Console.Clear();
-                        //calendarService.Edit();
+                        //EditService.Edit();
                         break;
                     case '5':
                         Console.WriteLine("\nNot implemented yet!");
                         Console.ReadKey();
                         Console.Clear();
-                        //calendarService.Delete();
+                        //DeleteService.Delete();
                         break;
                     case '6':
                         Console.Clear();

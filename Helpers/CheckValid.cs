@@ -9,16 +9,10 @@ namespace MyCalendarApp.Helpers
 {
     public static class CheckValid
     {
-        public static int IsValidInput(string value)
-        {
-            var success = int.TryParse(value, out var number);
-            return success ? number : 0;
-        }
-
         public static DateTime IsValidDate()
         {
             var isValid = false;
-            DateTime correctDate = DateTime.Now;
+            var correctDate = DateTime.Now;
 
             while (!isValid)
             {
@@ -29,11 +23,56 @@ namespace MyCalendarApp.Helpers
             return correctDate;
         }
 
-        public static void ConfirmOperation()
+        public static ConsoleColor IsValidColor()
         {
+            var isValid = false;
+            var correctColor = 0;
 
+            while (!isValid)
+            {
+                Console.Write("> ");
+                isValid = int.TryParse(Console.ReadLine(), out correctColor);
+                if (correctColor is >= 0 and <= 15) 
+                    continue;
+
+                Console.WriteLine("Invalid color! Enter correct number.");
+                isValid = false;
+            }
+            return (ConsoleColor)correctColor-1;
         }
 
+        public static int IsInputNumber(int maxNumber)
+        {
+            var isValid = false;
+            var correctNumber = 0;
 
+            while (!isValid)
+            {
+                isValid = int.TryParse(Console.ReadLine(), out correctNumber);
+                if (correctNumber >= 1 && correctNumber <= maxNumber)
+                    continue;
+
+                Console.Write("Enter correct number: ");
+                isValid = false;
+            }
+            return correctNumber;
+        }
+
+        public static bool IsBusy()
+        {
+            while (true)
+            {
+                var input = Console.ReadLine();
+
+                switch (input.ToUpper())
+                {
+                    case "FREE":
+                        return false;
+                    case "BUSY":
+                        return true;
+                }
+                Console.Write("Wrong input. Type FREE or BUSY: ");
+            }
+        }
     }
 }
