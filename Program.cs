@@ -34,19 +34,17 @@ namespace MyCalendarApp
                         break;
                     case '3':
                         Console.Clear();
-                        AddService.AddNew();
+                        AddService.AddMenu();
                         break;
                     case '4':
                         Console.WriteLine("\nNot implemented yet!");
                         Console.ReadKey();
                         Console.Clear();
-                        //EditService.Edit();
+                        //EditService.EditMenu();
                         break;
                     case '5':
-                        Console.WriteLine("\nNot implemented yet!");
-                        Console.ReadKey();
                         Console.Clear();
-                        //DeleteService.Delete();
+                        DeleteService.DeleteMenu();
                         break;
                     case '6':
                         Console.Clear();

@@ -14,7 +14,7 @@ namespace MyCalendarApp.CalendarService
         private static readonly FileHelpersXml<List<Calendar>> FileHelperEvent = new(FilePathCal);
         private static readonly FileHelpersXml<List<Task>> FileHelperTask = new(FilePathTask);
 
-        public static void ShowCurrentTime()
+        private static void ShowCurrentTime()
         {
             var currentTime = DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm");
             Console.WriteLine($"Current time: {currentTime}\n");

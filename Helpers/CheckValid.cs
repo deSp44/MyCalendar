@@ -74,5 +74,22 @@ namespace MyCalendarApp.Helpers
                 Console.Write("Wrong input. Type FREE or BUSY: ");
             }
         }
+
+        public static bool CheckYesOrNo()
+        {
+            while (true)
+            {
+                var input = Console.ReadLine();
+
+                switch (input.ToUpper())
+                {
+                    case "YES":
+                        return true;
+                    case "NO":
+                        return false;
+                }
+                Console.Write("Wrong input. Type YES or NO: ");
+            }
+        }
     }
 }
