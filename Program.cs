@@ -37,10 +37,8 @@ namespace MyCalendarApp
                         AddService.AddMenu();
                         break;
                     case '4':
-                        Console.WriteLine("\nNot implemented yet!");
-                        Console.ReadKey();
                         Console.Clear();
-                        //EditService.EditMenu();
+                        EditService.EditMenu();
                         break;
                     case '5':
                         Console.Clear();
