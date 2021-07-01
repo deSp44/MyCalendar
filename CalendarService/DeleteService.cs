@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using MyCalendarApp.Helpers;
 using MyCalendarApp.MainMenuService;
 using MyCalendarApp.Models;
@@ -65,8 +64,8 @@ namespace MyCalendarApp.CalendarService
         private static void DeleteCalendar()
         {
             Console.Clear();
-
             var calendarList = FileHelperEvent.DeserializeFromFile();
+            
             var count = 1;
             foreach (var calendar in calendarList)
             {
@@ -140,8 +139,8 @@ namespace MyCalendarApp.CalendarService
         private static void DeleteTask()
         {
             Console.Clear();
-            
             var tasksList = FileHelperTask.DeserializeFromFile();
+            
             var count = 1;
             foreach (var task in tasksList)
             {

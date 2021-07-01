@@ -11,6 +11,7 @@ namespace MyCalendarApp
             var actionService = new MenuActionService();
             actionService = Initialize(actionService);
 
+            // MAIN MENU OF APPLICATION
             Console.WriteLine("Welcome to MyCalendar, the place where you manage your time!\n");
             while (true)
             {

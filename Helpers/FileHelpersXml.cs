@@ -15,12 +15,13 @@ namespace MyCalendarApp.Helpers
 
         public void SerializeToFile(T param)
         {
-            var serializer = new XmlSerializer(typeof(T));
-
+            // CHECK IF FILE EXISTS
             var fileInfo = new FileInfo(_filePath);
             if (!fileInfo.Exists)
                 Directory.CreateDirectory(fileInfo.Directory.FullName);
 
+            // SAVE TO FILE
+            var serializer = new XmlSerializer(typeof(T));
             using var streamWriter = new StreamWriter(_filePath);
             serializer.Serialize(streamWriter, param);
             streamWriter.Close();
@@ -28,11 +29,12 @@ namespace MyCalendarApp.Helpers
 
         public T DeserializeFromFile()
         {
+            // CHECK IF FILE EXISTS
             if (!File.Exists(_filePath))
                 return new T();
 
+            // DOWNLOAD FROM FILE
             var serializer = new XmlSerializer(typeof(T));
-
             using var streamReader = new StreamReader(_filePath);
             var collectedData = (T)serializer.Deserialize(streamReader);
             streamReader.Close();

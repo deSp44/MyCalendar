@@ -13,7 +13,7 @@ namespace MyCalendarApp.CalendarService
         private static readonly string FilePathCal = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"MyCalendarApp\CalendarEventData.xml");
         private static readonly string FilePathTask = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"MyCalendarApp\CalendarTaskData.xml");
         private static readonly FileHelpersXml<List<Calendar>> FileHelperEvent = new(FilePathCal);
-        private static readonly FileHelpersXml<List<Models.Task>> FileHelperTask = new(FilePathTask);
+        private static readonly FileHelpersXml<List<Task>> FileHelperTask = new(FilePathTask);
 
         public static void EditMenu()
         {

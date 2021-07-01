@@ -65,7 +65,6 @@ namespace MyCalendarApp.CalendarService
             Console.Write("Enter new calendar name: ");
             newCalendar.Name = Console.ReadLine();
             Console.WriteLine("Enter calendar color by number: ");
-
             var values = Enum.GetValues(typeof(ConsoleColor));
             var count = 1;
             foreach (var item in values)
@@ -109,8 +108,7 @@ namespace MyCalendarApp.CalendarService
             newEvent.Description = Console.ReadLine();
             Console.Write("Status (FREE/BUSY): ");
             newEvent.IsBusy = CheckValid.IsBusy();
-
-            var countCalendar = 1;
+  
             var list = FileHelperEvent.DeserializeFromFile();
 
             if (!list.Any())
@@ -120,6 +118,7 @@ namespace MyCalendarApp.CalendarService
             }
             else
             {
+                var countCalendar = 1;
                 Console.WriteLine("Choose calendar: ");
                 foreach (var item in list)
                 {
@@ -128,23 +127,19 @@ namespace MyCalendarApp.CalendarService
                     countCalendar++;
                 }
                 Console.ForegroundColor = ConsoleColor.Gray;
-
                 var enteredKeyOption = CheckValid.IsInputNumber(countCalendar);
 
                 Console.Write("Press 'Y' if you are sure to add: ");
                 var enteredKey = Console.ReadKey();
                 if (enteredKey.Key == ConsoleKey.Y)
                 {
-                    for (int index = 1; index <= list.Count; index++)
+                    for (var index = 1; index <= list.Count; index++)
                     {
-                        if (index != enteredKeyOption)
-                            continue;
-                        else
-                        {
-                            var eventWithHighestId = list[index - 1].EventList.OrderByDescending(x => x.Id).FirstOrDefault();
-                            newEvent.Id = eventWithHighestId?.Id + 1 ?? 1;
-                            list[index - 1].EventList.Add(newEvent);
-                        }
+                        if (index == enteredKeyOption) continue;
+
+                        var eventWithHighestId = list[index - 1].EventList.OrderByDescending(x => x.Id).FirstOrDefault();
+                        newEvent.Id = eventWithHighestId?.Id + 1 ?? 1;
+                        list[index - 1].EventList.Add(newEvent);
 
                     }
                     FileHelperEvent.SerializeToFile(list);

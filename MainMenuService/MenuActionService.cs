@@ -11,7 +11,6 @@ namespace MyCalendarApp.MainMenuService
             _menuActions = new List<MenuAction>();
         }
 
-
         public void AddNewAction(int id, string name, string menuName)
         {
             var menuAction = new MenuAction(id, name) { MenuName = menuName };

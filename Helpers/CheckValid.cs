@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyCalendarApp.Helpers
 {
@@ -38,7 +34,7 @@ namespace MyCalendarApp.Helpers
                 Console.WriteLine("Invalid color! Enter correct number.");
                 isValid = false;
             }
-            return (ConsoleColor)correctColor-1;
+            return (ConsoleColor)correctColor - 1;
         }
 
         public static int IsInputNumber(int maxNumber)
@@ -64,13 +60,15 @@ namespace MyCalendarApp.Helpers
             {
                 var input = Console.ReadLine();
 
-                switch (input.ToUpper())
-                {
-                    case "FREE":
-                        return false;
-                    case "BUSY":
-                        return true;
-                }
+                if (input != null)
+                    switch (input.ToUpper())
+                    {
+                        case "FREE":
+                            return false;
+                        case "BUSY":
+                            return true;
+                    }
+
                 Console.Write("Wrong input. Type FREE or BUSY: ");
             }
         }
@@ -81,13 +79,15 @@ namespace MyCalendarApp.Helpers
             {
                 var input = Console.ReadLine();
 
-                switch (input.ToUpper())
-                {
-                    case "YES":
-                        return true;
-                    case "NO":
-                        return false;
-                }
+                if (input != null)
+                    switch (input.ToUpper())
+                    {
+                        case "YES":
+                            return true;
+                        case "NO":
+                            return false;
+                    }
+
                 Console.Write("Wrong input. Type YES or NO: ");
             }
         }
