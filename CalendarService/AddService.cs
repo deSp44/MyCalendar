@@ -113,7 +113,7 @@ namespace MyCalendarApp.CalendarService
 
             if (!list.Any())
             {
-                Console.WriteLine("\n\nOperation stopped. No calendar has been created yet.");
+                Console.WriteLine("\n\nOperation stopped. No calendar has been created yet. If you want to add event, create calendar first.");
                 Console.ReadKey();
             }
             else
@@ -135,7 +135,7 @@ namespace MyCalendarApp.CalendarService
                 {
                     for (var index = 1; index <= list.Count; index++)
                     {
-                        if (index == enteredKeyOption) continue;
+                        if (index != enteredKeyOption) continue;
 
                         var eventWithHighestId = list[index - 1].EventList.OrderByDescending(x => x.Id).FirstOrDefault();
                         newEvent.Id = eventWithHighestId?.Id + 1 ?? 1;
