@@ -1,4 +1,4 @@
-﻿namespace MyCalendarApp.MainMenuService
+﻿namespace MyCalendar.App.MainMenuService
 {
     public class MenuAction
     {

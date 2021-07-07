@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyCalendarApp.Models
+namespace MyCalendar.App.Models
 {
     public class Event
     {

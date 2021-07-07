@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Globalization;
 
-namespace MyCalendarApp.Helpers
+namespace MyCalendar.App.Helpers
 {
     public static class CheckValid
     {
-        public static DateTime IsValidDate()
+        public static DateTime IsValidDateNormal()
         {
             var isValid = false;
             var correctDate = DateTime.Now;
@@ -13,6 +13,20 @@ namespace MyCalendarApp.Helpers
             while (!isValid)
             {
                 isValid = DateTime.TryParseExact(Console.ReadLine(), "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out correctDate);
+                if (!isValid)
+                    Console.Write("Enter date again, but in correct format: ");
+            }
+            return correctDate;
+        }
+
+        public static DateTime IsValidDateExtended()
+        {
+            var isValid = false;
+            var correctDate = DateTime.Now;
+
+            while (!isValid)
+            {
+                isValid = DateTime.TryParseExact(Console.ReadLine(), "dd-MM-yyyy hh:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out correctDate);
                 if (!isValid)
                     Console.Write("Enter date again, but in correct format: ");
             }

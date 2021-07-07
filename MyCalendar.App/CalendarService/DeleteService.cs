@@ -2,23 +2,19 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MyCalendarApp.Helpers;
-using MyCalendarApp.MainMenuService;
-using MyCalendarApp.Models;
+using MyCalendar.App.Helpers;
+using MyCalendar.App.MainMenuService;
+using MyCalendar.App.Models;
 
-namespace MyCalendarApp.CalendarService
+namespace MyCalendar.App.CalendarService
 {
-    public static class DeleteService
+    public class DeleteService : BaseService
     {
-        private static readonly string FilePathCal = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"MyCalendarApp\CalendarEventData.xml");
-        private static readonly string FilePathTask = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"MyCalendarApp\CalendarTaskData.xml");
-        private static readonly FileHelpersXml<List<Calendar>> FileHelperEvent = new(FilePathCal);
-        private static readonly FileHelpersXml<List<Task>> FileHelperTask = new(FilePathTask);
 
         public static void DeleteMenu()
         {
             var actionService = new MenuActionService();
-            actionService = Initialize(actionService);
+            MenuActionService.Initialize(actionService);
 
             var loop = true;
             while (loop)
@@ -189,17 +185,6 @@ namespace MyCalendarApp.CalendarService
                 Console.Write("\nNothing has been deleted. Choose any key to continue...");
                 Console.ForegroundColor = ConsoleColor.Gray; Console.ReadKey();
             }
-        }
-
-        private static MenuActionService Initialize(MenuActionService actionService)
-        {
-            actionService.AddNewAction(1, "Calendar", "DeleteMenu");
-            actionService.AddNewAction(2, "Event", "DeleteMenu");
-            actionService.AddNewAction(3, "Task", "DeleteMenu");
-            actionService.AddNewAction(4, "Everything", "DeleteMenu");
-            actionService.AddNewAction(5, "Cancel action", "DeleteMenu");
-
-            return actionService;
         }
     }
 }

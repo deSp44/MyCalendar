@@ -1,8 +1,7 @@
 ﻿using System.IO;
-using System.Xml;
 using System.Xml.Serialization;
 
-namespace MyCalendarApp.Helpers
+namespace MyCalendar.App.Helpers
 {
     public class FileHelpersXml<T> where T : new()
     {

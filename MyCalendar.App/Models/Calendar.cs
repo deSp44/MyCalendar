@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MyCalendarApp.Models
+namespace MyCalendar.App.Models
 {
     public class Calendar
     {

@@ -1,15 +1,15 @@
-﻿using MyCalendarApp.CalendarService;
-using MyCalendarApp.MainMenuService;
-using System;
+﻿using System;
+using MyCalendar.App.CalendarService;
+using MyCalendar.App.MainMenuService;
 
-namespace MyCalendarApp
+namespace MyCalendar.App
 {
     public static class Program
     {
         public static void Main()
         {
             var actionService = new MenuActionService();
-            actionService = Initialize(actionService);
+            MenuActionService.Initialize(actionService);
 
             // MAIN MENU OF APPLICATION
             Console.WriteLine("Welcome to MyCalendar, the place where you manage your time!\n");
@@ -31,11 +31,12 @@ namespace MyCalendarApp
                         break;
                     case '2':
                         Console.Clear();
-                        ShowService.ShowTasks();
+                        ShowService.ShowTaskMenu();
                         break;
                     case '3':
                         Console.Clear();
-                        AddService.AddMenu();
+                        var addService = new AddService();
+                        addService.AddMenu();
                         break;
                     case '4':
                         Console.Clear();
@@ -56,18 +57,6 @@ namespace MyCalendarApp
                         break;
                 }
             }
-        }
-
-        private static MenuActionService Initialize(MenuActionService actionService)
-        {
-            actionService.AddNewAction(1, "Show calendar", "Main");
-            actionService.AddNewAction(2, "Show tasks", "Main");
-            actionService.AddNewAction(3, "Add new...", "Main");
-            actionService.AddNewAction(4, "Edit...", "Main");
-            actionService.AddNewAction(5, "Delete...", "Main");
-            actionService.AddNewAction(6, "Exit", "Main");
-
-            return actionService;
         }
     }
 }

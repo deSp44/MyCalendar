@@ -2,23 +2,18 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using MyCalendarApp.Helpers;
-using MyCalendarApp.MainMenuService;
-using MyCalendarApp.Models;
+using MyCalendar.App.Helpers;
+using MyCalendar.App.MainMenuService;
+using MyCalendar.App.Models;
 
-namespace MyCalendarApp.CalendarService
+namespace MyCalendar.App.CalendarService
 {
-    public static class AddService
+    public class AddService : BaseService
     {
-        private static readonly string FilePathCal = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"MyCalendarApp\CalendarEventData.xml");
-        private static readonly string FilePathTask = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"MyCalendarApp\CalendarTaskData.xml");
-        private static readonly FileHelpersXml<List<Calendar>> FileHelperEvent = new(FilePathCal);
-        private static readonly FileHelpersXml<List<Task>> FileHelperTask = new(FilePathTask);
-
-        public static void AddMenu()
+        public void AddMenu()
         {
             var actionService = new MenuActionService();
-            actionService = Initialize(actionService);
+            MenuActionService.Initialize(actionService);
 
             var loop = true;
             while (loop)
@@ -100,10 +95,10 @@ namespace MyCalendarApp.CalendarService
             Console.Clear();
             Console.Write("Enter event name: ");
             newEvent.Name = Console.ReadLine();
-            Console.Write("Enter event start date in correct format - DD-MM-YYYY: ");
-            newEvent.DateOfStart = CheckValid.IsValidDate();
-            Console.Write("Enter event end date in correct format - DD-MM-YYYY: ");
-            newEvent.DateOfEnd = CheckValid.IsValidDate();
+            Console.Write("Enter event start date in correct format - DD-MM-YYYY hh:mm: ");
+            newEvent.DateOfStart = CheckValid.IsValidDateExtended();
+            Console.Write("Enter event end date in correct format - DD-MM-YYYY hh:mm: ");
+            newEvent.DateOfEnd = CheckValid.IsValidDateExtended();
             Console.Write("Enter event description: ");
             newEvent.Description = Console.ReadLine();
             Console.Write("Status (FREE/BUSY): ");
@@ -162,7 +157,7 @@ namespace MyCalendarApp.CalendarService
             Console.Write("Enter task name: ");
             newTask.Name = Console.ReadLine();
             Console.Write("Enter task date in correct format - DD-MM-YYYY: ");
-            newTask.DayOfTask = CheckValid.IsValidDate();
+            newTask.DayOfTask = CheckValid.IsValidDateNormal();
 
             Console.Write("Press 'Y' if you are sure to add: ");
             var enteredKey = Console.ReadKey();
@@ -182,16 +177,6 @@ namespace MyCalendarApp.CalendarService
                 Console.WriteLine("\n\nOperation stopped. Click any key to continue...");
                 Console.ReadKey();
             }
-        }
-
-        private static MenuActionService Initialize(MenuActionService actionService)
-        {
-            actionService.AddNewAction(1, "Calendar", "AddMenu");
-            actionService.AddNewAction(2, "Event", "AddMenu");
-            actionService.AddNewAction(3, "Task", "AddMenu");
-            actionService.AddNewAction(4, "Cancel action", "AddMenu");
-
-            return actionService;
         }
     }
 }
