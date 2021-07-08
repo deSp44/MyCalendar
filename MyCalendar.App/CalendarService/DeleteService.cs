@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using MyCalendar.App.Helpers;
 using MyCalendar.App.MainMenuService;
-using MyCalendar.App.Models;
 
 namespace MyCalendar.App.CalendarService
 {
@@ -72,7 +70,7 @@ namespace MyCalendar.App.CalendarService
             Console.ForegroundColor = ConsoleColor.Gray;
 
             Console.Write("Select calendar that you want delete: ");
-            var enteredKeyOption = CheckValid.IsInputNumber(count);
+            var enteredKeyOption = CheckValid.IsInputNumber(calendarList.Count);
             Console.Write("Press 'Y' if you are sure to delete that calendar: ");
             var enteredKey = Console.ReadKey();
             if (enteredKey.Key == ConsoleKey.Y)
@@ -104,7 +102,7 @@ namespace MyCalendar.App.CalendarService
             }
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("Select calendar where event you want to delete is: ");
-            var enteredCalendarOption = CheckValid.IsInputNumber(calendarCount);
+            var enteredCalendarOption = CheckValid.IsInputNumber(calendarList.Count);
             var selectedCalendar = calendarList.ElementAt(enteredCalendarOption - 1);
 
             var eventCount = 1;
@@ -114,9 +112,9 @@ namespace MyCalendar.App.CalendarService
                 eventCount++;
             }
             Console.Write("Select event that you want delete: ");
-            var enteredEventOption = CheckValid.IsInputNumber(eventCount);
+            var enteredEventOption = CheckValid.IsInputNumber(selectedCalendar.EventList.Count);
 
-            Console.Write("Press 'Y' if you are sure to delete that calendar: ");
+            Console.Write("Press 'Y' if you are sure to delete that event: ");
             var enteredKey = Console.ReadKey();
             if (enteredKey.Key == ConsoleKey.Y)
             {
@@ -145,7 +143,7 @@ namespace MyCalendar.App.CalendarService
             }
 
             Console.Write("Select task that you want delete: ");
-            var enteredKeyOption = CheckValid.IsInputNumber(count);
+            var enteredKeyOption = CheckValid.IsInputNumber(tasksList.Count);
             Console.Write("Press 'Y' if you are sure to delete that task: ");
             var enteredKey = Console.ReadKey();
             if (enteredKey.Key == ConsoleKey.Y)

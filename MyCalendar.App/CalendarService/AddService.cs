@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using MyCalendar.App.Helpers;
 using MyCalendar.App.MainMenuService;
@@ -10,7 +8,7 @@ namespace MyCalendar.App.CalendarService
 {
     public class AddService : BaseService
     {
-        public void AddMenu()
+        public static void AddMenu()
         {
             var actionService = new MenuActionService();
             MenuActionService.Initialize(actionService);
@@ -122,7 +120,8 @@ namespace MyCalendar.App.CalendarService
                     countCalendar++;
                 }
                 Console.ForegroundColor = ConsoleColor.Gray;
-                var enteredKeyOption = CheckValid.IsInputNumber(countCalendar);
+                Console.Write("> ");
+                var enteredKeyOption = CheckValid.IsInputNumber(list.Count);
 
                 Console.Write("Press 'Y' if you are sure to add: ");
                 var enteredKey = Console.ReadKey();

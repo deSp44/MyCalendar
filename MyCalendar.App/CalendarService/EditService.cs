@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using MyCalendar.App.Helpers;
 using MyCalendar.App.MainMenuService;
@@ -67,7 +65,7 @@ namespace MyCalendar.App.CalendarService
             Console.ForegroundColor = ConsoleColor.Gray;
 
             Console.Write("Select calendar that you want edit: ");
-            var enteredKeyOption = CheckValid.IsInputNumber(count);
+            var enteredKeyOption = CheckValid.IsInputNumber(calendarList.Count);
             var selectedCalendar = calendarList.ElementAt(enteredKeyOption - 1);
 
             var newCalendar = new Calendar();
@@ -121,7 +119,7 @@ namespace MyCalendar.App.CalendarService
             }
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.Write("Select calendar where event you want to edit is: ");
-            var enteredCalendarOption = CheckValid.IsInputNumber(calendarCount);
+            var enteredCalendarOption = CheckValid.IsInputNumber(calendarList.Count);
             var selectedCalendar = calendarList.ElementAt(enteredCalendarOption - 1);
 
             Console.WriteLine();
@@ -132,7 +130,7 @@ namespace MyCalendar.App.CalendarService
                 eventCount++;
             }
             Console.Write("Select event that you want edit: ");
-            var enteredEventOption = CheckValid.IsInputNumber(eventCount);
+            var enteredEventOption = CheckValid.IsInputNumber(selectedCalendar.EventList.Count);
             var selectedEvent = selectedCalendar.EventList.ElementAt(enteredEventOption - 1);
 
             var newEvent = new Event();
@@ -140,8 +138,8 @@ namespace MyCalendar.App.CalendarService
             Console.WriteLine("--- EDITED EVENT ---");
             Console.ForegroundColor = selectedCalendar.Color;
             Console.WriteLine(selectedEvent.Name);
-            Console.WriteLine($"{selectedEvent.DateOfStart:dd MMMM yyyy}");
-            Console.WriteLine($"{selectedEvent.DateOfEnd:dd MMMM yyyy}");
+            Console.WriteLine($"{selectedEvent.DateOfStart:dd MMMM yyyy HH:mm}");
+            Console.WriteLine($"{selectedEvent.DateOfEnd:dd MMMM yyyy HH:mm}");
             Console.WriteLine(selectedEvent.Description);
             Console.WriteLine(selectedEvent.IsBusy ? "Busy: YES" : "Busy: NO");
             Console.ForegroundColor = ConsoleColor.Gray;
@@ -186,7 +184,7 @@ namespace MyCalendar.App.CalendarService
                 count++;
             }
             Console.Write("Select task that you want edit: ");
-            var enteredKeyOption = CheckValid.IsInputNumber(count);
+            var enteredKeyOption = CheckValid.IsInputNumber(tasksList.Count);
             var selectedTask = tasksList.ElementAt(enteredKeyOption - 1);
 
             var newTask = new Task();

@@ -35,8 +35,7 @@ namespace MyCalendar.App
                         break;
                     case '3':
                         Console.Clear();
-                        var addService = new AddService();
-                        addService.AddMenu();
+                        AddService.AddMenu();
                         break;
                     case '4':
                         Console.Clear();

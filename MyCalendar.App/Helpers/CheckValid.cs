@@ -26,7 +26,7 @@ namespace MyCalendar.App.Helpers
 
             while (!isValid)
             {
-                isValid = DateTime.TryParseExact(Console.ReadLine(), "dd-MM-yyyy hh:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out correctDate);
+                isValid = DateTime.TryParseExact(Console.ReadLine(), "dd-MM-yyyy H:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out correctDate);
                 if (!isValid)
                     Console.Write("Enter date again, but in correct format: ");
             }

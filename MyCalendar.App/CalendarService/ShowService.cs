@@ -45,22 +45,22 @@ namespace MyCalendar.App.CalendarService
                         }
                     }
                     Console.ForegroundColor = ConsoleColor.Gray;
+                }
 
-                    if (!passedEventList.Any()) continue;
+                if (passedEventList.Any())
+                {
+                    Console.WriteLine("\nPASSED EVENTS: ");
+                    Console.ForegroundColor = ConsoleColor.DarkGray;
+                    foreach (var calEvent in passedEventList.OrderByDescending(x => x.DateOfEnd))
                     {
-                        Console.WriteLine("\nPASSED EVENTS: ");
-                        Console.ForegroundColor = ConsoleColor.DarkGray;
-                        foreach (var calEvent in passedEventList.OrderByDescending(x => x.DateOfEnd))
-                        {
-                            Console.WriteLine($"Name: {calEvent.Name}");
-                            Console.WriteLine($"Date of start: {calEvent.DateOfStart:dddd, dd MMMM yyyy HH:mm}");
-                            Console.WriteLine($"Date of end: {calEvent.DateOfEnd:dddd, dd MMMM yyyy HH:mm}");
-                            Console.WriteLine($"Description: {calEvent.Description}");
-                            Console.WriteLine(calEvent.IsBusy ? "Busy: YES" : "Busy: NO");
-                            Console.Write("\n");
-                        }
-                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.WriteLine($"Name: {calEvent.Name}");
+                        Console.WriteLine($"Date of start: {calEvent.DateOfStart:dddd, dd MMMM yyyy HH:mm}");
+                        Console.WriteLine($"Date of end: {calEvent.DateOfEnd:dddd, dd MMMM yyyy HH:mm}");
+                        Console.WriteLine($"Description: {calEvent.Description}");
+                        Console.WriteLine(calEvent.IsBusy ? "Busy: YES" : "Busy: NO");
+                        Console.Write("\n");
                     }
+                    Console.ForegroundColor = ConsoleColor.Gray;
                 }
             }
             ScrollUp();
@@ -138,7 +138,7 @@ namespace MyCalendar.App.CalendarService
 
             var daysOfDoneTasks = doneTasks
             .Select(x => x.DayOfTask)
-            .OrderBy(x => x.Date)
+            .OrderByDescending(x => x.Date)
             .Distinct()
             .ToList();
 
@@ -208,38 +208,47 @@ namespace MyCalendar.App.CalendarService
 
             var days = isDone ? daysOfDoneTasks : daysOfUndoneTasks;
             var tasks = isDone ? doneTasks : undoneTasks;
-
-            var count = 1;
-            foreach (var day in days)
+            
+            var isEmpty = !tasksList.Any();
+            if (isEmpty)
             {
-                Console.WriteLine($"--- {day:dddd, dd MMMM yyyy} ---");
-                foreach (var task in tasks.Where(task => day == task.DayOfTask))
-                {
-                    Console.WriteLine($"{count}. {task.Name}");
-                    count++;
-                }
-                Console.WriteLine();
-            }
-            Console.Write("Select operation: ");
-            var enteredKeyOption = CheckValid.IsInputNumber(tasks.Count);
-
-            Console.Write("Press 'Y' if you are sure to save changes: ");
-            var enteredKey = Console.ReadKey();
-            if (enteredKey.Key == ConsoleKey.Y)
-            {
-                var selectedTask = tasks.ElementAt(enteredKeyOption - 1);
-                foreach (var task in tasksList.Where(task => selectedTask == task))
-                {
-                    task.IsDone = !isDone;
-                }
-                FileHelperTask.SerializeToFile(tasksList);
-                Console.WriteLine("\n\nEditing done! Click any key to continue...");
-                Console.ReadKey();
-            }
+                Console.WriteLine("There is nothing here yet.");
+                ScrollUp();
+            }  
             else
             {
-                Console.WriteLine("\n\nOperation stopped. Click any key to continue...");
-                Console.ReadKey();
+                var count = 1;
+                foreach (var day in days)
+                {
+                    Console.WriteLine($"--- {day:dddd, dd MMMM yyyy} ---");
+                    foreach (var task in tasks.Where(task => day == task.DayOfTask))
+                    {
+                        Console.WriteLine($"{count}. {task.Name}");
+                        count++;
+                    }
+                    Console.WriteLine();
+                }
+                Console.Write("Select operation: ");
+                var enteredKeyOption = CheckValid.IsInputNumber(tasks.Count);
+
+                Console.Write("Press 'Y' if you are sure to save changes: ");
+                var enteredKey = Console.ReadKey();
+                if (enteredKey.Key == ConsoleKey.Y)
+                {
+                    var selectedTask = tasks.ElementAt(enteredKeyOption - 1);
+                    foreach (var task in tasksList.Where(task => selectedTask == task))
+                    {
+                        task.IsDone = !isDone;
+                    }
+                    FileHelperTask.SerializeToFile(tasksList);
+                    Console.WriteLine("\n\nEditing done! Click any key to continue...");
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("\n\nOperation stopped. Click any key to continue...");
+                    Console.ReadKey();
+                }
             }
         }
 
