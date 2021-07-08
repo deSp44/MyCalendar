@@ -205,6 +205,6 @@ Project Link: [https://github.com/deSp44/MyCalendar](https://github.com/deSp44/M
 [issues-shield]: https://img.shields.io/github/issues/deSp44/MyCalendar.svg?style=for-the-badge
 [issues-url]: https://github.com/deSp44/MyCalendar/issues
 [license-shield]: https://img.shields.io/github/license/deSp44/MyCalendar.svg?style=for-the-badge
-[license-url]: https://github.com/deSp44/MyCalendar/LICENSE.txt
+[license-url]: https://github.com/deSp44/MyCalendar/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://www.linkedin.com/in/micha%C5%82-czaja-735013209/
